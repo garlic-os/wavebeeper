@@ -17,12 +17,12 @@ play.exe < audio.sqr
 
 `play.exe` is designed to take in a SQR file and play back the square wave it represents. When it encounters a 1, it excites the beep speaker by telling the operating system to play a pitch through it.[^1] When `play.exe` encounters a 0, it relaxes the beep speaker[^2]. Doing this at the original audio file's sample rate results in the beep speaker oscillating in time with the square wave just like a conventional speaker's diaphragm oscillates in time with regular sound data.
 
+[^1]: It plays the lowest possible pitch so the speaker doesn't have a chance to go back to rest before the next sample. You can't actually set the beeper's diaphragm state directly—[that's abstracted away by dedicated hardware on your motherboard.](https://web.archive.org/web/20161030204856/https://courses.engr.illinois.edu/ece390/books/labmanual/io-devices-speaker.html)
+[^2]: By turning it off.
+
 ## Square File Format (SQR)
 | Offset | Length (bytes) | Contents |
 | ------ | -------------- | -------- |
 | `0`    | 4              | The string "SQR\x00" |
 | `4`    | 4              | Sample rate (number of samples per second) |
 | `8`    | ?              | Audio data; each byte contains 8 samples, with the first in the most significant bit and last in the least significant bit |
-
-[^1] It plays the lowest possible pitch so the speaker doesn't have a chance to go back to rest before the next sample. You can't actually set the beeper's diaphragm state directly—[that's abstracted away by dedicated hardware on your motherboard.](https://web.archive.org/web/20161030204856/https://courses.engr.illinois.edu/ece390/books/labmanual/io-devices-speaker.html)
-[^2] By turning it off.
