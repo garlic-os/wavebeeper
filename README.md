@@ -1,5 +1,5 @@
 # wavebeeper (WIP)
-Play audio through your beep speaker
+Play audio files through your beep speaker
 ---
 
 ## Usage
