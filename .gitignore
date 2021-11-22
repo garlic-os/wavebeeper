@@ -1,6 +1,10 @@
 # IDE Configuration files
 .vscode/
 
+# Program input and output files
+*.wav
+*.sqr
+
 # Prerequisites
 *.d
 
