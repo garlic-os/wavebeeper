@@ -64,6 +64,8 @@ int main(int argc, char* argv[]) {
   cin.read(reinterpret_cast<char*>(&sample_rate), 4);
   short us_per_sample = round(1000000 / static_cast<double>(sample_rate));
 
+  cin.ignore(4);  // Ignore the data size information. Don't care!
+
   char sample_byte;
   char bit_index = 0;
 
