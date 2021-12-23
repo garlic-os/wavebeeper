@@ -8,7 +8,7 @@ using std::cout;
 using std::endl;
 
 
-inline unsigned long ceiling_divide(long a, long b) {
+inline unsigned long ceiling_divide(unsigned long a, unsigned long b) {
   return 1 + ((a - 1) / b);
 }
 
