@@ -26,6 +26,9 @@ lp_inp gfp_inp;
 // https://web.archive.org/web/20161030204856/https://courses.engr.illinois.edu/ece390/books/labmanual/io-devices-speaker.html
 inline void beeper_on() {
   gfp_out(0x43, 0xB6);
+#include <stdio.h>     // stdin
+#include <fcntl.h>     // _setmode, _O_BINARY
+#include <io.h>        // _fileno
 }
 
 
@@ -112,6 +115,8 @@ int main(int argc, char* argv[]) {
 
     // Play the pitch for 1/sample_rate seconds
     std::this_thread::sleep_for(std::chrono::microseconds(us_per_sample));
+  if (!_setmode(_fileno(stdin), _O_BINARY)) {
+    throw "Failed to set stdin to binary mode";
   }
 
   beeper_off();

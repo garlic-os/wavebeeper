@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <fcntl.h>
+#include <io.h>
 #include <iostream>
 
 #define INVALID_INPUT 1
@@ -14,6 +17,13 @@ inline unsigned long ceiling_divide(long a, long b) {
 
 
 int main(int argc, char *argv[]) {
+  if (!_setmode(_fileno(stdin), _O_BINARY)) {
+    throw "Failed to set stdin to binary mode";
+  }
+  if (!_setmode(_fileno(stdout), _O_BINARY)) {
+    throw "Failed to set stdout to binary mode";
+  }
+
   // Verify that the input is a valid WAV file.
   {
     char riff[4];
