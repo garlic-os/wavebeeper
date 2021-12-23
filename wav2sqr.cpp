@@ -33,6 +33,7 @@ int main(int argc, char *argv[]) {
     }
   }
 
+  // Read the number of channels.
   unsigned short num_channels;
   cin.ignore(10);  // Now at offset 22
   cin.read(reinterpret_cast<char*>(&num_channels), 2);  // Now at offset 24
@@ -47,6 +48,7 @@ int main(int argc, char *argv[]) {
     cout.write(sample_rate, 4);
   }
 
+  // Read the bits per sample data.
   unsigned short bits_per_sample;
   cin.ignore(6);  // Now at offset 34
   cin.read(reinterpret_cast<char*>(&bits_per_sample), 2);  // Now at offset 36
