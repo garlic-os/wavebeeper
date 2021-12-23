@@ -3,11 +3,8 @@
 #include <io.h>
 #include <iostream>
 
-#define INVALID_INPUT 1
-
 using std::cin;
 using std::cout;
-using std::cerr;
 using std::endl;
 
 
@@ -32,8 +29,7 @@ int main(int argc, char *argv[]) {
     cin.ignore(4);      // Now at offset 8
     cin.read(wave, 4);  // Now at offset 12
     if (strncmp(riff, "RIFF", 4) != 0 || strncmp(wave, "WAVE", 4) != 0) {
-      cerr << "Invalid WAV file" << endl;
-      exit(INVALID_INPUT);
+      throw "Invalid WAV file";
     }
   }
 
