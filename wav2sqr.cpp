@@ -84,7 +84,7 @@ int main(int argc, char *argv[]) {
 
       // Write the byte to the output every 8th bit processed.
       if (++bit_index == 8) {
-        cout.write(&byte, 1);
+        cout.put(byte);
         bit_index = 0;
 
         // Clear the byte for the next go-round (that big funny line can only
