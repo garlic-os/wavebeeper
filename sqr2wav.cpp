@@ -54,7 +54,7 @@ int main() {
   cout.write(reinterpret_cast<char*>(&data_size), 4);
 
   char sample;
-  while (cin.read(&sample, 1)) {
+  while (cin.get(sample)) {
     // Iterate over each bit in the file from left to right.
     for (int i = 7; i >= 0; --i) {
       // If the bit is set, write a 0xFF to the output file.
