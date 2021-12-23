@@ -17,7 +17,7 @@ play.exe < audio.sqr
 
 `play.exe` is designed to take in a SQR file and play back the square wave it represents. When it encounters a 1, it moves the beep speaker's diaphragm out, and when it encounters a 0, it moves the beep speaker's diaphragm in. Doing this at the original audio file's sample rate results in the beep speaker oscillating in time with the square wave just like a conventional speaker's diaphragm oscillates in time with regular sound data.
 
-`sqr2wav.exe` converts an SQR file back into an (unsigned 8-bit mono) WAV file with the same sample rate as the WAV file it came from.
+`sqr2wav.exe` (currently broken) converts an SQR file back into an (unsigned 8-bit mono) WAV file with the same sample rate as the WAV file it came from.
 
 ## Square File Format (SQR)
 | Offset | Length (bytes) | Contents |
