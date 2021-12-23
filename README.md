@@ -15,7 +15,7 @@ play.exe < audio.sqr
 ## Explanation
 `wav2sqr.exe` makes what I call Square files, with the `.sqr` extension. This is named after the fact that they encode a square wave for the beep speaker to play, a straight `1` or `0` per sample in the original audio file based on whether the sample is a part of a peak or a trough. `wav2sqr.exe` essentially quantizes WAV files[^1] to 1-bit, to match the fact that a beep speaker can only be fully on or fully off with no volume range in between.
 
-[^1]: Currently only 8-bit PCM WAV files. Support for the far more commom 16-bit PCM and 32-bit float formats in the works.
+[^1]: Currently only 8-bit PCM WAV files. Support for the far more common 16-bit PCM and 32-bit float formats in the works.
 
 `play.exe` is designed to take in a SQR file and play back the square wave it represents. When it encounters a 1, it moves the beep speaker's diaphragm out, and when it encounters a 0, it moves the beep speaker's diaphragm in. Doing this at the original audio file's sample rate results in the beep speaker oscillating in time with the square wave just like a conventional speaker's diaphragm oscillates in time with regular sound data.
 
