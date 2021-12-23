@@ -1,15 +1,15 @@
-# wavebeeper (WIP)
+# wavebeeper
 Play audio files through your beep speaker
 ---
 
 ## Usage
 Convert and play a WAV file directly
 ```
-convert.exe < audio.wav | play.exe
+wav2sqr.exe < audio.wav | play.exe
 ```
 Or save the converted audio so you can play it multiple times or do something else with it
 ```
-convert.exe < audio.wav > audio.sqr
+wav2sqr.exe < audio.wav > audio.sqr
 play.exe < audio.sqr
 ```
 ## Explanation
