@@ -1,3 +1,8 @@
+# Operating system metadata
+desktop.ini
+thumbs.db
+.DS_Store
+
 # IDE Configuration files
 .vscode/
 
