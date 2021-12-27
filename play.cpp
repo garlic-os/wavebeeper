@@ -9,6 +9,9 @@
 
 /**
  * Plays a stream of a SQR file through the beep speaker.
+ * 
+ * @pre: The input stream is open in binary mode.
+ *       The input stream's cursor is at the start of a valid SQR file.
  */
 class SQRPlayer {
  private:
@@ -70,10 +73,6 @@ class SQRPlayer {
 
 
  public:
-  /**
-   * @pre: The input stream is open in binary mode.
-   *       The input stream's cursor is at the start of a valid SQR file.
-   */
   explicit SQRPlayer(std::istream& input_stream) : m_input(input_stream) {
     // Verify that the input is a valid SQR file.
     char buffer[4];
