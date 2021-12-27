@@ -84,9 +84,6 @@ class SQRPlayer {
     // Read the metadata.
     m_input.read(reinterpret_cast<char*>(&m_sample_rate), 4);
     m_input.read(reinterpret_cast<char*>(&m_data_size), 4);
-
-
-    set_pit_freq(m_sample_rate);
   }
 
 
