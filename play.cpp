@@ -52,17 +52,16 @@ class SQRPlayer {
   }
 
   // Set the frequency of Channel 2 of the PIT.
-  void set_pit_freq(double freq) {
-    uint16_t period = freq2period(freq);
-
+  void set_pit_freq(double freq) const {
     // Set Channel 2 to Square Wave mode.
     // https://wiki.osdev.org/Programmable_Interval_Timer#Operating_Modes
     m_inp_out.outb(PIT_CMDREG, 0b10110110);
 
     // Set the channel's reload value to the period corresponding to the given
     // frequency.
-    m_inp_out.outb(PIT_CHANNEL_2, (uint8_t) period);
-    m_inp_out.outb(PIT_CHANNEL_2, (uint8_t) (period >> 8));
+    uint16_t period = freq2period(freq);
+    m_inp_out.outb(PIT_CHANNEL_2, static_cast<uint8_t>(period));
+    m_inp_out.outb(PIT_CHANNEL_2, static_cast<uint8_t>(period >> 8));
   }
 
   // Wait for Channel 2 of the PIT to complete its current cycle.
