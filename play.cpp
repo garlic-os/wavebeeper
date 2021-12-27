@@ -39,7 +39,6 @@ class SQRPlayer {
                    KB_CONTROL_PORT);
   }
 
-
   // Move the beep speaker's diaphragm inward (relaxed state).
   void beeper_in() const {
     // Clear bit 1 of the keyboard control register.
@@ -66,8 +65,10 @@ class SQRPlayer {
     m_inp_out.outb(PIT_CHANNEL_2, (uint8_t) (period >> 8));
   }
 
-
+  // Wait for Channel 2 of the PIT to complete its current cycle.
   void pit_wait() const {
+    // The PIT cycles between some large value (not necessarily 0xFF) and some
+    // low value (not necessarily 0x00).
     while (m_inp_out.inb(PIT_CHANNEL_2) < 127) {}
   }
 
