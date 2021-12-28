@@ -1,6 +1,10 @@
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+// Set stdin to binary mode on Windows
 #include <stdio.h>     // stdin
 #include <fcntl.h>     // _setmode, _O_BINARY
 #include <io.h>        // _fileno
+#endif
+
 #include <iostream>    // std::cin, std::istream
 #include <cmath>       // std::round
 #include <cstdint>     // uint8_t, uint16_t, uint32_t
@@ -127,9 +131,11 @@ class SQRPlayer {
 
 
 int main() {
+  #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
   if (!_setmode(_fileno(stdin), _O_BINARY)) {
     throw "Failed to set stdin to binary mode";
   }
+  #endif
 
   SQRPlayer player(std::cin);
   player.play();
