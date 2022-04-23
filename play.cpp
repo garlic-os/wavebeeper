@@ -25,6 +25,7 @@ class SQRPlayer {
   static constexpr uint8_t PIT_CMDREG = 0x43;
 
   // https://wiki.osdev.org/PC_Speaker#The_Raw_Hardware
+  // 13.7.1 https://www.intel.com/content/dam/www/public/us/en/documents/datasheets/7-series-chipset-pch-datasheet.pdf
   static constexpr uint8_t KB_CONTROL_PORT = 0x61;
 
 
@@ -76,6 +77,24 @@ class SQRPlayer {
   }
 
 
+  // I forgot to write down what this does but the PIT doesn't cycle without it
+  void init_something() const {
+    // m_inp_out.outb(m_inp_out.inb(0x64) & 0b11101111, 0x64);
+    // m_inp_out.outb(0x60, 0x64);
+    // uint8_t guh_mode = m_inp_out.inb(0x60);
+    // m_inp_out.outb(0x60, 0x64);
+    // m_inp_out.outb(guh_mode | 0b00000001, 0x60);
+    m_inp_out.outb(m_inp_out.inb(KB_CONTROL_PORT) | 0b00000001,
+                   KB_CONTROL_PORT);
+  }
+
+  void deinit_something() const {
+    // m_inp_out.outb(m_inp_out.inb(0x64) | 0b00010000, 0x64);
+    m_inp_out.outb(m_inp_out.inb(KB_CONTROL_PORT) & 0b00001110,
+                   KB_CONTROL_PORT);
+  }
+
+
  public:
   explicit SQRPlayer(std::istream& input_stream) : m_input(input_stream) {
     // Verify that the input is a valid SQR file.
@@ -107,6 +126,7 @@ class SQRPlayer {
 
     // Set Channel 2 of the PIT to cycle at the given sample rate.
     set_pit_freq(m_sample_rate);
+    // init_something();
 
     // Read samples in groups of 8 (1 byte) and play them.
     for (bytes_read = 0;
@@ -126,6 +146,7 @@ class SQRPlayer {
     }
 
     beeper_in();
+    // deinit_something();
   }
 };
 
