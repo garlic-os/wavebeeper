@@ -69,9 +69,10 @@ class SQRPlayer {
   }
 
   // Wait for Channel 2 of the PIT to complete its current cycle.
+  // If I could find a way to do this without eating a CPU core that'd be great
   void pit_wait() const {
-    // The PIT cycles between some large value (not necessarily 0xFF) and some
-    // low value (not necessarily 0x00).
+    // The PIT alternates between some large value (not necessarily 0xFF) and
+    // some low value (not necessarily 0x00).
     while (m_inp_out.inb(PIT_CHANNEL_2) < 127) {}
   }
 
