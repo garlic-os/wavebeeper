@@ -37,3 +37,8 @@ thumbs.db
 *.exe
 *.out
 *.app
+
+# Other Windows compiler generated files
+*.ilk
+*.pdb
+*.exp
