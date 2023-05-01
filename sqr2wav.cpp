@@ -1,31 +1,16 @@
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-	#include <io.h>  // _setmode, _O_BINARY
-	#include <stdio.h>  // stdin, stdout, _fileno
-	// #include <fcntl.h>
-#endif
-
-
 #include <iostream>  // std::cin, std::cerr, std::cout, std::endl
 #include <cstring>  // strncmp
-
-#define INVALID_INPUT 1
+#include "./windows-setup.hpp"
 
 using std::cin;
 using std::cout;
 using std::cerr;
 using std::endl;
 
+constexpr int INVALID_INPUT = 1;
+
 
 int main() {
-	#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-		if (!_setmode(_fileno(stdin), _O_BINARY)) {
-			throw "Failed to set stdin to binary mode";
-		}
-		if (!_setmode(_fileno(stdout), _O_BINARY)) {
-			throw "Failed to set stdout to binary mode";
-		}
-	#endif
-
 	// Verify that the input is a valid SQR file.
 	{
 		char buffer[4];
