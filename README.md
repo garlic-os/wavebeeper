@@ -1,25 +1,29 @@
 # wavebeeper
 Play audio files through your beep speaker
+
+![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
+![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
+
 ---
 
 ## Usage
 Convert and play a WAV file directly
 ```
-wav2sqr.exe < audio.wav | play.exe
+./wav2sqr < audio.wav | ./play
 ```
 Or save the converted audio so you can play it multiple times or do something else with it
 ```
-wav2sqr.exe < audio.wav > audio.sqr
-play.exe < audio.sqr
+./wav2sqr < audio.wav > audio.sqr
+./play < audio.sqr
 ```
 ## Explanation
-`wav2sqr.exe` makes what I call Square files, with the `.sqr` extension. This is named after the fact that they encode a square wave for the beep speaker to play, a straight `1` or `0` per sample in the original audio file based on whether the sample is a part of a peak or a trough. `wav2sqr.exe` essentially quantizes WAV files[^1] to 1-bit, to match the fact that a beep speaker can only be fully on or fully off with no volume range in between.
+`wav2sqr` makes what I call Square files, with the `.sqr` extension. This is named after the fact that they encode a square wave for the beep speaker to play, a straight `1` or `0` per sample in the original audio file based on whether the sample is a part of a peak or a trough. `wav2sqr` essentially quantizes WAV files[^1] to 1-bit, to match the fact that a beep speaker can only be fully on or fully off with no volume range in between.
 
 [^1]: Currently only 8-bit PCM WAV files. Support for the far more common 16-bit PCM and 32-bit float formats in the works.
 
-`play.exe` is designed to take in a SQR file and play back the square wave it represents. When it encounters a 1, it moves the beep speaker's diaphragm out, and when it encounters a 0, it moves the beep speaker's diaphragm in. Doing this at the original audio file's sample rate results in the beep speaker oscillating in time with the square wave just like a conventional speaker's diaphragm oscillates in time with regular sound data.
+`play` is designed to take in a SQR file and play back the square wave it represents. When it encounters a 1, it moves the beep speaker's diaphragm out, and when it encounters a 0, it moves the beep speaker's diaphragm in. Doing this at the original audio file's sample rate results in the beep speaker oscillating in time with the square wave just like a conventional speaker's diaphragm oscillates in time with regular sound data.
 
-`sqr2wav.exe` (currently broken) converts an SQR file back into an (unsigned 8-bit mono) WAV file with the same sample rate as the WAV file it came from.
+`sqr2wav` converts an SQR file back into an (unsigned 8-bit mono) WAV file with the same sample rate as the WAV file it came from.
 
 ## Square File Format (SQR)
 | Offset | Length (bytes) | Contents |
