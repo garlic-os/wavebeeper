@@ -146,6 +146,7 @@ class SQRPlayer {
 
 
 int main() {
+	windows_setup();
 	SQRPlayer player(std::cin);
 	player.play();
 	return 0;

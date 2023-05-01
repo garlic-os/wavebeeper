@@ -14,6 +14,7 @@ inline unsigned long ceiling_divide(unsigned long a, unsigned long b) {
 
 
 int main(int argc, char *argv[]) {
+	windows_setup();
 	// Verify that the input is a valid WAV file.
 	{
 		char riff[4];

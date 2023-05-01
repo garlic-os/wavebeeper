@@ -11,6 +11,7 @@ constexpr int INVALID_INPUT = 1;
 
 
 int main() {
+	windows_setup();
 	// Verify that the input is a valid SQR file.
 	{
 		char buffer[4];
