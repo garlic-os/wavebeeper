@@ -3,7 +3,7 @@
  * Windows and Linux.
  * On Linux, these come bundled with the operating system in sys/io.h,
  * meanwhile support for these functions on Windows comes from the third-party
- * InpOut32.dll library.
+ * InpOut32 library.
  * The functions are wrapped in a class so on Windows we can free the DLL when
  * the program exits and normalize the interface across platforms.
  */ 
@@ -23,8 +23,8 @@ class AbstractInpOut {
 
 /**
  * Windows
- * - Get inb and outb from third-party InpOut32.dll.
- * - Free InpOut32.dll when the program exits.
+ * - Get inb and outb from InpOut32.
+ * - Free the InpOut32 DLL when the program exits.
  * - Reverse inb and outb's argument orders to match the Linux version.
  */
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
@@ -47,7 +47,6 @@ class InpOut : public AbstractInpOut {
 
  public:
   InpOut() {
-    m_handle = LoadLibrary("InpOut32.DLL");
     if (m_handle == nullptr) {
       throw "Failed to load driver";
     }
@@ -74,6 +73,7 @@ class InpOut : public AbstractInpOut {
     // Reverse this argument order
     m_outb(port, data);
   }
+		m_handle = LoadLibrary("inpoutx64.dll");
 };
 
 
