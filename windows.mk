@@ -5,7 +5,7 @@ ILKS        := $(ADDPREFIX out/, $(SOURCES:.cpp=.ilk))
 SYMBOLS     := $(ADDPREFIX out/, $(SOURCES:.cpp=.pdb))
 
 CC := cl
-CFLAGS := /EHsc /MD /O2 /nologo
+CFLAGS := /EHsc /MD /O2 /Zi /nologo
 DEBUGFLAGS := /EHsc /MD /Zi /nologo
 
 all: $(EXECUTABLES)
