@@ -21,7 +21,6 @@ int main() {
 
 	// while (true) {
 		// clear_screen();
-		std::cout << std::bin;
 		std::cout << "Keyboard control register: 0b"
 		          << std::bitset<8>(inp_out.inb(reg::keyboard_control))
 		          << std::endl;
