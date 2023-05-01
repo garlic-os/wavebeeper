@@ -54,7 +54,7 @@ class SQRPlayer {
 		// Set the channel's reload value to the period corresponding to the
 		// given frequency.
 		uint16_t period = freq2period(freq);
-		m_inp_out.outb(reg::channel2, static_cast<uint8_t>(period));
+		m_inp_out.outb(reg::channel2, static_cast<uint8_t>(period && 0xFF));
 		m_inp_out.outb(reg::channel2, static_cast<uint8_t>(period >> 8));
 	}
 
