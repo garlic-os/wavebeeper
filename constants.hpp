@@ -14,7 +14,7 @@ namespace constants {
 
 		// https://wiki.osdev.org/PC_Speaker#The_Raw_Hardware
 		// 13.7.1 https://www.intel.com/content/dam/www/public/us/en/documents/datasheets/7-series-chipset-pch-datasheet.pdf
-		constexpr uint8_t keyboard_control = 0x61;
+		constexpr uint8_t keyboard_control = 0x64;
 	}
 
 	// https://wiki.osdev.org/Programmable_Interval_Timer#Operating_Modes
