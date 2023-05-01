@@ -61,9 +61,9 @@ class SQRPlayer {
 	// Wait for PIT Channel 2 to complete its current cycle.
 	// TODO: Use interrupts instead of polling.
 	void pit_wait() const {
-		while (m_inp_out.inb(PIT_CHANNEL_2) < 0x7F) {}
 		// The PIT alternates between some large value (not necessarily 0xFF)
 		// and some low value (not necessarily 0x00).
+		while (m_inp_out.inb(reg::channel2) < 43) {}
 	}
 
 
