@@ -124,8 +124,8 @@ class SQRPlayer {
 
 		// Read samples in groups of 8 (1 byte) and play them.
 		for (bytes_read = 0;
-				 bytes_read < m_data_size && m_input.get(sample_byte);
-				 ++bytes_read) {
+			 bytes_read < m_data_size && m_input.get(sample_byte);
+			 ++bytes_read) {
 			for (bit_index = 0; bit_index < 8; ++bit_index) {
 				if ((sample_byte >> (7 - bit_index)) & 1) {
 					// Bit is a 1, so move the speaker's diaphragm outward.

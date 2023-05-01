@@ -41,7 +41,7 @@ class AbstractInpOut {
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>  // __stdcall, HINSTANCE, LoadLibrary, FreeLibrary,
-                      // GetProcAddress
+					  // GetProcAddress
 
 	class InpOut : public AbstractInpOut {
 	  private:
