@@ -10,9 +10,6 @@ using std::endl;
 constexpr int INVALID_INPUT = 1;
 
 
-constexpr int INVALID_INPUT = 1;
-
-
 int main() {
 	// Verify that the input is a valid SQR file.
 	{
