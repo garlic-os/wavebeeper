@@ -2,8 +2,11 @@
 #include <cmath>       // std::round
 #include <cstdint>     // uint8_t, uint16_t, uint32_t
 #include <cstring>     // strncmp
-#include "inpout.hpp"  // InpOut
+#include "./constants.hpp"
+#include "./inpout.hpp"  // InpOut
 #include "./windows-setup.hpp"
+
+using namespace constants;
 
 
 /**
@@ -14,16 +17,6 @@
  */
 class SQRPlayer {
   private:
-	// https://wiki.osdev.org/Programmable_Interval_Timer#I.2FO_Ports
-	static constexpr uint32_t PIT_TICKRATE = 1193180;
-	static constexpr uint8_t PIT_CHANNEL_2 = 0x42;
-	static constexpr uint8_t PIT_CMDREG = 0x43;
-
-	// https://wiki.osdev.org/PC_Speaker#The_Raw_Hardware
-	// 13.7.1 https://www.intel.com/content/dam/www/public/us/en/documents/datasheets/7-series-chipset-pch-datasheet.pdf
-	static constexpr uint8_t KB_CONTROL_PORT = 0x61;
-
-
 	InpOut m_inp_out;  // An InpOut instance for accessing the beep speaker and PIT.
 	std::istream& m_input;  // The input stream to read from (e.g. cin or a file).
 	uint32_t m_sample_rate;  // Samples per second (i.e. Hz).
@@ -33,34 +26,36 @@ class SQRPlayer {
 	// Move the beep speaker's diaphragm outward (excited state).
 	// https://wiki.osdev.org/PC_Speaker#The_Raw_Hardware
 	void beeper_out() const {
-		// Set bit 1 of the keyboard control register.
-		m_inp_out.outb(m_inp_out.inb(KB_CONTROL_PORT) | 0b00000010,
-									 KB_CONTROL_PORT);
+		m_inp_out.set_bit(1, reg::keyboard_control);
 	}
 
 	// Move the beep speaker's diaphragm inward (relaxed state).
 	void beeper_in() const {
-		// Clear bit 1 of the keyboard control register.
-		m_inp_out.outb(m_inp_out.inb(KB_CONTROL_PORT) & 0b11111101,
-									 KB_CONTROL_PORT);
+		m_inp_out.clear_bit(1, reg::keyboard_control);
 	}
 
 
 	uint16_t freq2period(double freq) const {
-		return static_cast<uint16_t>(std::round(PIT_TICKRATE / freq));
+		return static_cast<uint16_t>(std::round(pit_tick_rate / freq));
 	}
 
-	// Set the frequency of Channel 2 of the PIT.
+	// Set the frequency of PIT Channel 2.
 	void set_pit_freq(double freq) const {
-		// Set Channel 2 to Square Wave mode.
-		// https://wiki.osdev.org/Programmable_Interval_Timer#Operating_Modes
-		m_inp_out.outb(PIT_CMDREG, 0b10110110);
+		// Set Channel 2 to Square Wave mode and prepare it to accept a 16-bit
+		// reload value.
+		m_inp_out.outb(
+			constants::flag::mode::select::channel2 |
+			constants::flag::mode::access_mode::lobyte_then_hibyte |
+			constants::flag::mode::operating_mode::square_wave_generator |
+			constants::flag::mode::binary_mode::binary,
+			reg::mode
+		);
 
-		// Set the channel's reload value to the period corresponding to the given
-		// frequency.
+		// Set the channel's reload value to the period corresponding to the
+		// given frequency.
 		uint16_t period = freq2period(freq);
-		m_inp_out.outb(PIT_CHANNEL_2, static_cast<uint8_t>(period));
-		m_inp_out.outb(PIT_CHANNEL_2, static_cast<uint8_t>(period >> 8));
+		m_inp_out.outb(reg::channel2, static_cast<uint8_t>(period));
+		m_inp_out.outb(reg::channel2, static_cast<uint8_t>(period >> 8));
 	}
 
 	// Wait for Channel 2 of the PIT to complete its current cycle.
@@ -80,16 +75,16 @@ class SQRPlayer {
 		// m_inp_out.outb(0x60, 0x64);
 		// m_inp_out.outb(guh_mode | 0b00000001, 0x60);
 		m_inp_out.outb(
-			m_inp_out.inb(KB_CONTROL_PORT) | 0b00000001,
-			KB_CONTROL_PORT
+			m_inp_out.inb(reg::keyboard_control) | 0b00000001,
+			reg::keyboard_control
 		);
 	}
 
 	void deinit_something() const {
 		// m_inp_out.outb(m_inp_out.inb(0x64) | 0b00010000, 0x64);
 		m_inp_out.outb(
-			m_inp_out.inb(KB_CONTROL_PORT) & 0b00001110,
-			KB_CONTROL_PORT
+			m_inp_out.inb(reg::keyboard_control) & 0b00001110,
+			reg::keyboard_control
 		);
 	}
 
@@ -140,7 +135,7 @@ class SQRPlayer {
 					beeper_in();
 				}
 				pit_wait();  // Wait for the PIT to complete its current cycle,
-										 // which happens every sample-rate-th of a second.
+				             // which happens every sample-rate-th of a second.
 			}
 		}
 

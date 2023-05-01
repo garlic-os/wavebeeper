@@ -16,9 +16,19 @@
 
 class AbstractInpOut {
  public:
-  virtual ~AbstractInpOut() {}
-  virtual uint16_t inb(uint16_t port) const = 0;
-  virtual void outb(uint16_t data, uint16_t port) const = 0;
+	virtual ~AbstractInpOut() {}
+	virtual uint8_t inb(uint16_t port) const = 0;
+	virtual void outb(uint8_t data, uint16_t port) const = 0;
+
+	uint8_t test_bit(uint8_t bit, uint16_t port) const {
+		return this->inb(port) & (1 << bit);
+	}
+	void set_bit(uint8_t bit, uint16_t port) const {
+		this->outb(this->inb(port) | 1 << bit, port);
+	}
+	void clear_bit(uint8_t bit, uint16_t port) const {
+		this->outb(this->inb(port) & ~(1 << bit), port);
+	}
 };
 
 /**
