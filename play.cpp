@@ -58,12 +58,12 @@ class SQRPlayer {
 		m_inp_out.outb(reg::channel2, static_cast<uint8_t>(period >> 8));
 	}
 
-	// Wait for Channel 2 of the PIT to complete its current cycle.
-	// If I could find a way to do this without eating a CPU core that'd be great
+	// Wait for PIT Channel 2 to complete its current cycle.
+	// TODO: Use interrupts instead of polling.
 	void pit_wait() const {
-		// The PIT alternates between some large value (not necessarily 0xFF) and
-		// some low value (not necessarily 0x00).
 		while (m_inp_out.inb(PIT_CHANNEL_2) < 0x7F) {}
+		// The PIT alternates between some large value (not necessarily 0xFF)
+		// and some low value (not necessarily 0x00).
 	}
 
 
