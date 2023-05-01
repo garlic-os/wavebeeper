@@ -1,16 +1,15 @@
 SOURCES := $(wildcard *.cpp)
-OBJECTS := $(SOURCES:.cpp=.obj)
-EXECUTABLES := $(SOURCES:.cpp=.exe)
+EXECUTABLES := $(basename $(SOURCES))
 
-CC := cl
-CFLAGS := /EHsc /MD /O2 /nologo
+CC := g++
+CFLAGS := -O3 -Wall -Wextra -Wpedantic -std=c++14
 
 all: $(EXECUTABLES)
 
-%.exe: %.cpp
-	$(CC) $(CFLAGS) $<
+$(EXECUTABLES) : % : %.cpp $(SOURCES)
+	$(CC) $(CFLAGS) $< -o $@
 
 .PHONY: clean
 
 clean:
-	del $(OBJECTS) $(EXECUTABLES)
+	rm $(EXECUTABLES)
