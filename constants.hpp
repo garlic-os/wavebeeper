@@ -12,9 +12,8 @@ namespace constants {
 		constexpr uint8_t channel2 = 0x42;
 		constexpr uint8_t mode = 0x43;
 
-		// https://wiki.osdev.org/PC_Speaker#The_Raw_Hardware
-		// 13.7.1 https://www.intel.com/content/dam/www/public/us/en/documents/datasheets/7-series-chipset-pch-datasheet.pdf
-		constexpr uint8_t keyboard_control = 0x64;
+		// 13.7.1 (p. 522) https://www.intel.com/content/dam/www/public/us/en/documents/datasheets/7-series-chipset-pch-datasheet.pdf
+		constexpr uint8_t nmi_control = 0x61;
 	}
 
 	// https://wiki.osdev.org/Programmable_Interval_Timer#Operating_Modes

@@ -26,12 +26,12 @@ class SQRPlayer {
 	// Move the beep speaker's diaphragm outward (excited state).
 	// https://wiki.osdev.org/PC_Speaker#The_Raw_Hardware
 	void beeper_out() const {
-		m_inp_out.set_bit(1, reg::keyboard_control);
+		m_inp_out.set_bit(1, reg::nmi_control);
 	}
 
 	// Move the beep speaker's diaphragm inward (relaxed state).
 	void beeper_in() const {
-		m_inp_out.clear_bit(1, reg::keyboard_control);
+		m_inp_out.clear_bit(1, reg::nmi_control);
 	}
 
 
