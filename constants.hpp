@@ -44,9 +44,16 @@ namespace constants {
 				constexpr uint8_t bcd = 0b00000001;
 			}
 		}
-		namespace keyboard {
-			constexpr uint8_t speaker_enable = 0b00000010;
-			constexpr uint8_t gate2 = 0b00000001;
+
+		namespace nmi {
+			constexpr uint8_t serrno_nmi_source_status = 7;
+			constexpr uint8_t iochk_nmi_sts = 6;
+			constexpr uint8_t tmr2_out_sts = 5;
+			constexpr uint8_t ref_toggle = 4;
+			constexpr uint8_t iochk_nmi_en = 3;
+			constexpr uint8_t pci_serr_en = 2;
+			constexpr uint8_t spkr_dat_en = 1;
+			constexpr uint8_t tim_cnt2_en = 0;
 		}
 	}
 }
