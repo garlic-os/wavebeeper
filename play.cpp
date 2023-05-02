@@ -35,7 +35,7 @@ class SQRPlayer {
 	}
 
 
-	uint16_t freq2period(double freq) const {
+	static uint16_t freq2period(double freq) const {
 		return static_cast<uint16_t>(std::round(pit_tick_rate / freq));
 	}
 
