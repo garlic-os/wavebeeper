@@ -77,26 +77,12 @@ class SQRPlayer {
 		while (m_inp_out.inb(reg::channel2) < 43) {}
 	}
 
-
-	// I forgot to write down what this does but the PIT doesn't cycle without it
-	void init_something() const {
-		// m_inp_out.outb(m_inp_out.inb(0x64) & 0b11101111, 0x64);
-		// m_inp_out.outb(0x60, 0x64);
-		// uint8_t guh_mode = m_inp_out.inb(0x60);
-		// m_inp_out.outb(0x60, 0x64);
-		// m_inp_out.outb(guh_mode | 0b00000001, 0x60);
-		m_inp_out.outb(
-			m_inp_out.inb(reg::keyboard_control) | 0b00000001,
-			reg::keyboard_control
-		);
+	void init() {
+		m_inp_out.set_bit(0, reg::nmi_control);
 	}
 
-	void deinit_something() const {
-		// m_inp_out.outb(m_inp_out.inb(0x64) | 0b00010000, 0x64);
-		m_inp_out.outb(
-			m_inp_out.inb(reg::keyboard_control) & 0b00001110,
-			reg::keyboard_control
-		);
+	void deinit() {
+		m_inp_out.clear_bit(0, reg::nmi_control);
 	}
 
 
@@ -117,6 +103,7 @@ class SQRPlayer {
 
 	virtual ~SQRPlayer() {
 		beeper_in();
+		deinit();
 	}
 
 
@@ -128,6 +115,8 @@ class SQRPlayer {
 		uint32_t bytes_read;
 		char sample_byte;
 		uint8_t bit_index;
+
+		init();
 
 		// Set Channel 2 of the PIT to cycle at the given sample rate.
 		set_pit_freq(m_sample_rate);
@@ -151,7 +140,7 @@ class SQRPlayer {
 		}
 
 		beeper_in();
-		// deinit_something();
+		deinit();
 	}
 };
 
