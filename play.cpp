@@ -39,10 +39,18 @@ class SQRPlayer {
 		return static_cast<uint16_t>(std::round(pit_tick_rate / freq));
 	}
 
-	// Set the frequency of PIT Channel 2.
-	void set_pit_freq(double freq) const {
-		// Set Channel 2 to Square Wave mode and prepare it to accept a 16-bit
-		// reload value.
+	static uint8_t low_byte(uint16_t value) const {
+		return static_cast<uint8_t>(value & 0xFF);
+	}
+
+	static uint8_t high_byte(uint16_t value) const {
+		return static_cast<uint8_t>(value >> 8);
+	}
+
+
+	// Set Channel 2 to Square Wave mode and prepare it to accept a 16-bit
+	// reload value.
+	void configure_pit() const {
 		m_inp_out.outb(
 			constants::flag::pit_mode::select::channel2 |
 			constants::flag::pit_mode::access_mode::lobyte_then_hibyte |
@@ -50,12 +58,15 @@ class SQRPlayer {
 			constants::flag::pit_mode::binary_mode::binary,
 			reg::pit_mode
 		);
+	}
 
+	// Set the frequency of PIT Channel 2.
+	void set_pit_freq(double freq) const {
 		// Set the channel's reload value to the period corresponding to the
 		// given frequency.
 		uint16_t period = freq2period(freq);
-		m_inp_out.outb(reg::channel2, static_cast<uint8_t>(period && 0xFF));
-		m_inp_out.outb(reg::channel2, static_cast<uint8_t>(period >> 8));
+		m_inp_out.outb(low_byte(period & 0xFF), reg::channel2);
+		m_inp_out.outb(high_byte(period >> 8), reg::channel2);
 	}
 
 	// Wait for PIT Channel 2 to complete its current cycle.
