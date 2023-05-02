@@ -1,5 +1,6 @@
 #include <iostream>  // std::cin, std::cerr, std::cout, std::endl
 #include <cstring>  // strncmp
+#include <cstdint>  // uint8_t, uint32_t
 #include "./windows-setup.hpp"
 
 using std::cin;
@@ -27,11 +28,11 @@ int main() {
 
 	// Each 1-bit long sample from the input file is expanded out to 8-bits,
 	// making for 8 times the data size.
-	unsigned long data_size;
+	uint32_t data_size;
 	cin.read(reinterpret_cast<char*>(&data_size), 4);
 	data_size *= 8;
 
-	unsigned long file_size = data_size + 44;
+	uint32_t file_size = data_size + 44;
 
 	// Write the header for an 8-bit, mono WAV file with the same sample rate
 	// as the input file, according to this guide:
@@ -49,7 +50,7 @@ int main() {
 	char sample;
 	while (cin.get(sample)) {
 		// Iterate over each bit in the file from left to right.
-		for (int i = 7; i >= 0; --i) {
+		for (uint8_t i = 7; i >= 0; --i) {
 			// If the bit is set, write a 0xFF to the output file.
 			// Otherwise, write a 0x00.
 			cout.put((sample & (1 << i)) ? '\xFF' : '\x00');
