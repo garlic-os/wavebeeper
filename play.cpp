@@ -44,11 +44,11 @@ class SQRPlayer {
 		// Set Channel 2 to Square Wave mode and prepare it to accept a 16-bit
 		// reload value.
 		m_inp_out.outb(
-			constants::flag::mode::select::channel2 |
-			constants::flag::mode::access_mode::lobyte_then_hibyte |
-			constants::flag::mode::operating_mode::square_wave_generator |
-			constants::flag::mode::binary_mode::binary,
-			reg::mode
+			constants::flag::pit_mode::select::channel2 |
+			constants::flag::pit_mode::access_mode::lobyte_then_hibyte |
+			constants::flag::pit_mode::operating_mode::square_wave_generator |
+			constants::flag::pit_mode::binary_mode::binary,
+			reg::pit_mode
 		);
 
 		// Set the channel's reload value to the period corresponding to the

@@ -10,7 +10,7 @@ namespace constants {
 	// https://wiki.osdev.org/Programmable_Interval_Timer#I.2FO_Ports
 	namespace reg {
 		constexpr uint8_t channel2 = 0x42;
-		constexpr uint8_t mode = 0x43;
+		constexpr uint8_t pit_mode = 0x43;
 
 		// 13.7.1 (p. 522) https://www.intel.com/content/dam/www/public/us/en/documents/datasheets/7-series-chipset-pch-datasheet.pdf
 		constexpr uint8_t nmi_control = 0x61;
@@ -18,7 +18,7 @@ namespace constants {
 
 	// https://wiki.osdev.org/Programmable_Interval_Timer#Operating_Modes
 	namespace flag {
-		namespace mode {
+		namespace pit_mode {
 			namespace select {
 				constexpr uint8_t channel0 = 0b00000000;
 				constexpr uint8_t channel1 = 0b01000000;
