@@ -1,8 +1,8 @@
 SOURCES := $(wildcard *.cpp)
-OBJECTS     := $(ADDPREFIX out/, $(SOURCES:.cpp=.obj))
-EXECUTABLES := $(ADDPREFIX out/, $(SOURCES:.cpp=.exe))
-ILKS        := $(ADDPREFIX out/, $(SOURCES:.cpp=.ilk))
-SYMBOLS     := $(ADDPREFIX out/, $(SOURCES:.cpp=.pdb))
+OBJECTS     := $(SOURCES:.cpp=.obj)
+EXECUTABLES := $(SOURCES:.cpp=.exe)
+ILKS        := $(SOURCES:.cpp=.ilk)
+SYMBOLS     := $(SOURCES:.cpp=.pdb)
 
 CC := cl
 CFLAGS := /EHsc /MD /O2 /Zi /nologo
