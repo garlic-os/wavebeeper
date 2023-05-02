@@ -10,6 +10,10 @@ using std::endl;
 
 constexpr int INVALID_INPUT = 1;
 
+bool test_bit(uint8_t bit, uint8_t byte) {
+	return (byte & (1 << bit)) != 0;
+}
+
 
 int main() {
 	windows_setup();
@@ -53,7 +57,7 @@ int main() {
 		for (uint8_t i = 7; i >= 0; --i) {
 			// If the bit is set, write a 0xFF to the output file.
 			// Otherwise, write a 0x00.
-			cout.put((sample & (1 << i)) ? '\xFF' : '\x00');
+			cout.put(test_bit(i, sample) ? '\xFF' : '\x00');
 		}
 	}
 

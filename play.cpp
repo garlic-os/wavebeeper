@@ -8,6 +8,10 @@
 
 using namespace constants;
 
+bool test_bit(uint8_t bit, uint8_t byte) {
+	return (byte & (1 << bit)) != 0;
+}
+
 
 /**
  * Plays a stream of a SQR file through the beep speaker.
@@ -125,7 +129,7 @@ class SQRPlayer {
 			 bytes_read < m_data_size && m_input.get(sample_byte);
 			 ++bytes_read) {
 			for (bit_index = 0; bit_index < 8; ++bit_index) {
-				if ((sample_byte >> (7 - bit_index)) & 1) {
+				if (test_bit(bit_index, sample_byte)) {
 					// Bit is a 1, so move the speaker's diaphragm outward.
 					beeper_out();
 				} else {
