@@ -74,8 +74,8 @@ int main(int argc, char *argv[]) {
 	//   the threshold and vice versa.
 	while (cin.read(reinterpret_cast<char*>(sample), bits_per_sample / 8)) {
 		if (num_channels == 1 || channel_state) {
-			// Set or unset the nth most sigificant bit in the byte based on the above
-			// logic.
+			// Set or clear the nth most sigificant bit in the byte based on the
+			// above logic.
 			byte |= ((sample[0] >> 7) != ((bits_per_sample / 8) > 1)) << (7 - bit_index);
 
 			// Write the byte to the output every 8th bit processed.
@@ -83,9 +83,9 @@ int main(int argc, char *argv[]) {
 				cout.put(byte);
 				bit_index = 0;
 
-				// Clear the byte for the next go-round (that big funny line can only
-				// set bits, it can't unset them, so it only works when the byte starts
-				// out as 0.)
+				// Clear the byte for the next go-round (that big funny line can
+				// only set bits, it can't unset them, so it only works when the
+				// byte starts out as 0.)
 				byte = 0;
 			}
 		}
