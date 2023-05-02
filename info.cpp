@@ -19,19 +19,25 @@ void clear_screen() {
 int main() {
 	InpOut inp_out;
 
-	// while (true) {
-		// clear_screen();
-		std::cout << "Keyboard control register: 0b"
-		          << std::bitset<8>(inp_out.inb(reg::keyboard_control))
+	while (true) {
+		clear_screen();
+		std::cout << "    NMI control register: "
+		          << std::bitset<8>(inp_out.inb(0x61))
+				  << "\n";
+		std::cout << "           PIT Channel 0: "
+		          << std::bitset<8>(inp_out.inb(reg::channel2-2))
 		          << std::endl;
-		std::cout << "            PIT Channel 2: 0b"
+		std::cout << "           PIT Channel 2: "
 		          << std::bitset<8>(inp_out.inb(reg::channel2))
 		          << std::endl;
-		std::cout << "                 PIT Mode: 0b"
-		          << std::bitset<8>(inp_out.inb(reg::mode))
+		std::cout << "   Timer Counter 0 [5:0]: "
+		          << std::bitset<8>(inp_out.inb(0x40))
 		          << std::endl;
-		// std::this_thread::sleep_for(std::chrono::milliseconds(1000/60));
-	// }
+		std::cout << "   Timer Counter 2 [5:0]: "
+		          << std::bitset<8>(inp_out.inb(0x42))
+		          << std::endl;
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000/60));
+	}
 
 	return 0;
 }
