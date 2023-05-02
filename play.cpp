@@ -119,8 +119,8 @@ class SQRPlayer {
 		init();
 
 		// Set Channel 2 of the PIT to cycle at the given sample rate.
+		configure_pit();
 		set_pit_freq(m_sample_rate);
-		// init_something();
 
 		// Read samples in groups of 8 (1 byte) and play them.
 		for (bytes_read = 0;
