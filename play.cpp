@@ -39,15 +39,15 @@ class SQRPlayer {
 	}
 
 
-	static uint16_t freq2period(double freq) const {
+	static uint16_t freq2period(double freq) {
 		return static_cast<uint16_t>(std::round(pit_tick_rate / freq));
 	}
 
-	static uint8_t low_byte(uint16_t value) const {
+	static uint8_t low_byte(uint16_t value) {
 		return static_cast<uint8_t>(value & 0xFF);
 	}
 
-	static uint8_t high_byte(uint16_t value) const {
+	static uint8_t high_byte(uint16_t value) {
 		return static_cast<uint8_t>(value >> 8);
 	}
 
