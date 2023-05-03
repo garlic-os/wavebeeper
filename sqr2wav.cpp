@@ -52,9 +52,9 @@ int main() {
 	cout.write(reinterpret_cast<char*>(&data_size), 4);
 
 	char sample;
-	while (cin.get(sample)) {
+	while (!cin.get(sample).eof()) {
 		// Iterate over each bit in the file from left to right.
-		for (uint8_t i = 7; i >= 0; --i) {
+		for (int8_t i = 7; i >= 0; --i) {
 			// If the bit is set, write a 0xFF to the output file.
 			// Otherwise, write a 0x00.
 			cout.put(test_bit(i, sample) ? '\xFF' : '\x00');
