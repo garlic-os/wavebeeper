@@ -1,10 +1,14 @@
 #include <iostream>    // std::cin, std::istream
 #include <cmath>       // std::round
 #include <cstdint>     // uint8_t, uint16_t, uint32_t
-#include <cstring>     // strncmp
+#include <cstring>     // strncmp, EOF
+// #include <chrono>
+// #include <thread>
+#include <time.h>	   // clock_gettime, clock_nanosleep, CLOCK_MONOTONIC, TIMER_ABSTIME
 #include "./constants.hpp"
 #include "./inpout.hpp"  // InpOut
 #include "./windows-setup.hpp"
+
 
 using namespace constants;
 
@@ -12,12 +16,21 @@ bool test_bit(uint8_t bit, uint8_t byte) {
 	return (byte & (1 << bit)) != 0;
 }
 
+void abs_nano_sleep(long nsec) {
+	static struct timespec ts;
+	if (!ts.tv_sec)
+		clock_gettime(CLOCK_MONOTONIC, &ts);
+	ts.tv_nsec += nsec;
+	if (ts.tv_nsec >= 1000000000) {
+		ts.tv_nsec -= 1000000000;
+		ts.tv_sec++;
+	}
+	clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &ts, 0);
+}
+
 
 /**
  * Plays a stream of a SQR file through the beep speaker.
- * 
- * @pre: The input stream is open in binary mode.
- *       The input stream's cursor is at the start of a valid SQR file.
  */
 class SQRPlayer {
   private:
@@ -58,7 +71,7 @@ class SQRPlayer {
 		m_inp_out.outb(
 			constants::flag::pit_mode::select::channel2 |
 			constants::flag::pit_mode::access_mode::lobyte_then_hibyte |
-			constants::flag::pit_mode::operating_mode::square_wave_generator |
+			constants::flag::pit_mode::operating_mode::interrupt_on_terminal_count |
 			constants::flag::pit_mode::binary_mode::binary,
 			reg::pit_mode
 		);
@@ -69,14 +82,17 @@ class SQRPlayer {
 		// Set the channel's reload value to the period corresponding to the
 		// given frequency.
 		uint16_t period = freq2period(freq);
-		m_inp_out.outb(low_byte(period & 0xFF), reg::channel2);
-		m_inp_out.outb(high_byte(period >> 8), reg::channel2);
+		m_inp_out.outb(low_byte(period), reg::channel2);
+		m_inp_out.outb(high_byte(period), reg::channel2);
 	}
 
 	// Wait for PIT Channel 2 to complete its current cycle.
 	// TODO: Use interrupts instead of polling.
 	void pit_wait() const {
-		while (!m_inp_out.test_bit(flag::nmi::tmr2_out_sts, reg::nmi_control)) {}
+		while (!m_inp_out.test_bit(flag::nmi::tmr2_out_sts, reg::nmi_control)) {
+			// std::this_thread::sleep_for(std::chrono::microseconds(1));
+		}
+		// std::cerr << "Wah!" << std::endl;
 	}
 
 	void init() {
@@ -110,36 +126,59 @@ class SQRPlayer {
 
 
 	/**
+	 * @pre: The input stream is open in binary mode.
+     * @pre: The input stream's cursor is at the start of a valid SQR file.
 	 * @post: The input stream's cursor is at the end of the SQR file's data
 	 *        section or the EOF, whichever is encountered first.
 	 */
 	void play() {
 		uint32_t bytes_read;
-		char sample_byte;
-		uint8_t bit_index;
+		char sample_byte = '\x00';
+		int8_t bit_index;
+
+		// m_sample_rate = 100000;  // DEBUG
 
 		init();
 
 		// Set Channel 2 of the PIT to cycle at the given sample rate.
 		configure_pit();
-		set_pit_freq(m_sample_rate);
+		// set_pit_freq(m_sample_rate);
+
+		uint32_t out_count = 0;
+		uint32_t in_count = 0;
+
+		bool is_out = false;
 
 		// Read samples in groups of 8 (1 byte) and play them.
 		for (bytes_read = 0;
-			 bytes_read < m_data_size && m_input.get(sample_byte);
+			 bytes_read < m_data_size && !m_input.get(sample_byte).eof();
 			 ++bytes_read) {
-			for (bit_index = 0; bit_index < 8; ++bit_index) {
+			for (bit_index = 7; bit_index >= 0; --bit_index) {
 				if (test_bit(bit_index, sample_byte)) {
-					// Bit is a 1, so move the speaker's diaphragm outward.
-					beeper_out();
+					if (!is_out) {
+						// Bit is a 1, so move the speaker's diaphragm outward.
+						beeper_out();
+						++out_count;
+						is_out = true;
+					}
 				} else {
-					// Bit is a 0, so move the speaker's diaphragm inward.
-					beeper_in();
+					if (is_out) {
+						// Bit is a 0, so move the speaker's diaphragm inward.
+						beeper_in();
+						++in_count;
+						is_out = false;
+					}
 				}
-				pit_wait();  // Wait for the PIT to complete its current cycle,
+				// pit_wait();  // Wait for the PIT to complete its current cycle,
 				             // which happens every sample-rate-th of a second.
+				// set_pit_freq(m_sample_rate);
+				abs_nano_sleep(1000000000/m_sample_rate);
 			}
 		}
+
+		std::cerr << "Samples played: " << bytes_read * 8 << std::endl;
+		std::cerr << "Out count: " << out_count << std::endl;
+		std::cerr << "In count: " << in_count << std::endl;
 
 		beeper_in();
 		deinit();
