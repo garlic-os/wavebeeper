@@ -9,6 +9,8 @@ namespace constants {
 
 	// https://wiki.osdev.org/Programmable_Interval_Timer#I.2FO_Ports
 	namespace reg {
+		constexpr uint8_t channel0 = 0x40;
+		constexpr uint8_t channel1 = 0x41;
 		constexpr uint8_t channel2 = 0x42;
 		constexpr uint8_t pit_mode = 0x43;
 
